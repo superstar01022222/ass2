@@ -180,7 +180,7 @@ ArmyKnights::ArmyKnights(const string &file_armyknights) : num(0), knights(nullp
         int a, b, c, d, e;
         army_in >> a >> b >> c >> d >> e;
 
-        knights[i] = BaseKnight::create(id, a, b, c, d, e);
+        knights[i] = BaseKnight::create(id, a, b, d, c, e);
         id++;
     }
 
@@ -434,7 +434,7 @@ void KnightAdventure::run()
 void BaseKnight::after_fight()
 {
     BaseItem *current = this->bag->head;
-    while (current != nullptr && current->item != anti)
+    while (current != nullptr && current->item == anti)
     {
         if (current->item == pho1 && current->canUse(this))
         {
@@ -732,6 +732,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
     lknight->after_fight();
 
     if (lknight->hp=-1){
+        delete lastKnight();
         return false;
     }
     else return true;
