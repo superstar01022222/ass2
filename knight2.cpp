@@ -36,46 +36,50 @@ bool is_dragon(int n)
 /* * * BEGIN implementation of class BaseBag * * */
 bool Antidote::canUse(BaseKnight *knight)
 {
-  
+    return true;
 }
 
 void Antidote::use(BaseKnight *knight)
 {
-    
+    return;
 }
 // NixI
 bool PhoenixDownI::canUse(BaseKnight *knight)
 {
-    if (knight->hp <= 0)
-        return true;
-    else
+    if ( knight->hp > 0)
         return false;
+
+    return true;
 }
 
 void PhoenixDownI::use(BaseKnight *knight)
 {
     knight->hp = knight->maxhp;
+    knight->bag->remove_item();
+    return;
 }
 // Nix2
 bool PhoenixDownII::canUse(BaseKnight *knight)
 {
-    if (knight->hp < knight->maxhp / 3)
-        return true;
-    else
+    if ( knight->hp >= knight->maxhp / 4)
         return false;
+
+    return true;
 }
 
 void PhoenixDownII::use(BaseKnight *knight)
 {
     knight->hp = knight->maxhp;
+    knight->bag->remove_item();
 }
 // nIX3
 bool PhoenixDownIII::canUse(BaseKnight *knight)
 {
-    if (knight->hp < knight->maxhp / 3)
-        return true;
-    else
+    if (knight->hp >= knight->maxhp / 3)
+   
         return false;
+    
+        return true;
 }
 
 void PhoenixDownIII::use(BaseKnight *knight)
@@ -84,14 +88,16 @@ void PhoenixDownIII::use(BaseKnight *knight)
         knight->hp = knight->maxhp / 3;
     else
         knight->hp += knight->maxhp / 4;
+    knight->bag->remove_item();
 }
 // NIX4
 bool PhoenixDownIV::canUse(BaseKnight *knight)
 {
-    if (knight->hp < knight->maxhp / 2)
-        return true;
-    else
+       if (knight->hp >= knight->maxhp / 2)
+   
         return false;
+    
+        return true;
 }
 
 void PhoenixDownIV::use(BaseKnight *knight)
@@ -100,6 +106,8 @@ void PhoenixDownIV::use(BaseKnight *knight)
         knight->hp = knight->maxhp / 2;
     else
         knight->hp += knight->maxhp / 5;
+
+    knight->bag->remove_item();
 }
 /* * * END implementation of class BaseBag * * */
 
@@ -177,11 +185,11 @@ ArmyKnights::ArmyKnights(const string &file_armyknights) : num(0), knights(nullp
     }
 
     army_in.close();
-    PaladinShield=0;
-    Lancelotspear=0;
-    GuineverHair=0;
-    ExcaliburSword=0;
-    meet_Omega=false;
+    PaladinShield = 0;
+    Lancelotspear = 0;
+    GuineverHair = 0;
+    ExcaliburSword = 0;
+    meet_Omega = false;
 }
 
 ArmyKnights::~ArmyKnights()
@@ -212,34 +220,65 @@ BaseKnight *ArmyKnights::lastKnight() const
 }
 
 
-bool ArmyKnights::fight(BaseOpponent *opponent){}  //need done
-    bool ArmyKnights::adventure(Events *events){}      //need done
 
 
+bool ArmyKnights::hasPaladinShield() const
+{
+    return (PaladinShield == 1);
+} // need done
+bool ArmyKnights::hasLancelotSpear() const
+{
+    return (Lancelotspear == 1);
+} // need done
+bool ArmyKnights::hasGuinevereHair() const
+{
+    return (GuineverHair == 1);
+} // need done
+bool ArmyKnights::hasExcaliburSword() const
+{
+    return (ExcaliburSword == 1);
+}
 
-    bool ArmyKnights::hasPaladinShield() const{}    //need done
-    bool ArmyKnights::hasLancelotSpear() const{}    //need done
-    bool ArmyKnights::hasGuinevereHair() const{}    //need done
-    bool ArmyKnights::hasExcaliburSword() const{}
-
-    void ArmyKnights::insert_gil(int n) {
+void ArmyKnights::insert_gil(int n)
+{
     int over_gil = 0;
 
-    
-    for (int i = num - 1; i >= 0; i--) {
-        knights[i]->gil += n + over_gil;  
+    for (int i = num - 1; i >= 0; i--)
+    {
+        knights[i]->gil += n + over_gil;
 
-   
-        if (knights[i]->gil > 999) {
-            over_gil = knights[i]->gil - 999;  
-            knights[i]->gil = 999;  
-        } else {
-            over_gil = 0;  
+        if (knights[i]->gil > 999)
+        {
+            over_gil = knights[i]->gil - 999;
+            knights[i]->gil = 999;
+        }
+        else
+        {
+            over_gil = 0;
+        }
+    }
+}
+void ArmyKnights::insert_item(BaseItem *item)
+{
+    int i = num - 1;
+
+    while (i >= 0)
+    {
+        if (knights[index]->bag->insertFirst(item))
+        {
+
+            break;
+        }
+
+        index--;
+
+        if (index < 0)
+        {
+            delete item;
         }
     }
 }
 
-    void ArmyKnights::insert_item(BaseItem *item){}
 /* * * END implementation of class ArmyKnights * * */
 
 /* * * BEGIN implementation of class KnightAdventure * * */
@@ -249,10 +288,107 @@ KnightAdventure::KnightAdventure()
     events = nullptr;
 }
 
+bool ArmyKnights::adventure(Events *events)
+{
+    for (int i = 0; i < events->count(); i++)
+    {
+        if (events->get(i) == 1)
+        {
+            fight(new Madbear(i, lastKnight()->level));
+        }
+        if (events->get(i) == 2)
+        {
+            fight(new Bandit(i, lastKnight()->level));
+        }
+        if (events->get(i) == 3)
+        {
+            fight(new LordLupin(i, lastKnight()->level));
+        }
+        if (events->get(i) == 4)
+        {
+            fight(new Elf(i, lastKnight()->level));
+        }
+        if (events->get(i) == 5)
+        {
+            fight(new Troll(i, lastKnight()->level));
+        }
+        if (events->get(i) == 6)
+        {
+            fight(new Torberry(i));
+        }
+        if (events->get(i) == 7)
+        {
+            fight(new Queen(i, lastKnight()->gil));
+        }
+        if (events->get(i) == 8)
+        {
+            fight(new Nina());
+        }
+        if (events->get(i) == 9)
+        {
+            fight(new DurianG());
+        }
+        if (events->get(i) == 10)
+        {
+            fight(new Omega());
+        }
+        if (events->get(i) == 11)
+        {
+            fight(new Hades());
+        }
+        if (events->get(i) == 112)
+        {
+            insert_item(new PhoenixDownII()); // phoenixII
+        }
+        if (events->get(i) == 113)
+        {
+            insert_item(new PhoenixDownIII()); // phoenixIII
+        }
+        if (events->get(i) == 114)
+        {
+            insert_item(new PhoenixDownIV()); // phoenixIv
+        }
+        if (events->get(i) == 95)
+        {
+            if (PaladinShield == 0)
+            {
+                PaladinShield = 1;
+            }
+        }
+        if (events->get(i) == 96)
+        {
+            if (Lancelotspear == 0)
+            {
+                Lancelotspear = 1;
+            }
+        }
+        if (events->get(i) == 97)
+        {
+            if (GuineverHair == 0)
+            {
+                GuineverHair = 1;
+            }
+        }
+
+        if (events->get(i) == 98)
+        {
+            if (ExcaliburSword == 0 && PaladinShield == 1 && Lancelotspear == 1 && GuineverHair == 1)
+            {
+                ExcaliburSword = 1;
+            }
+        }
+        if (events->get(i) == 99)
+        {
+            fight_Ultimecia(); // ultimecia
+        }
+        printInfo();
+    }
+    return win_Ultimecia;
+}
+
 /* * * END implementation of class KnightAdventure * * */
 
-
-//event class
+// event class
 Events::Events(const string &file_events)
 {
     ifstream event_in(file_events);
@@ -279,8 +415,396 @@ int Events::get(int i) const
     return i_event[i];
 }
 
+KnightAdventure::~KnightAdventure() {} // TODO:
 
-
-
+void KnightAdventure::loadArmyKnights(const string &s)
+{
+    armyKnights = new ArmyKnights(s);
+}
+void KnightAdventure::loadEvents(const string &s)
+{
+    events = new Events(s);
+}
+void KnightAdventure::run()
+{
+    armyKnights->adventure(events);
+    armyKnights->printResult(armyKnights->win_Ultimecia);
+}
 // opponet
+void BaseKnight::after_fight()
+{
+    BaseItem *current = this->bag->head;
+    while (current != nullptr && current->item != anti)
+    {
+        if (current->item == pho1 && current->canUse(this))
+        {
+            this->bag->get(pho1)->use(this);
+            this->bag->remove_item();
+            return;
+        }
+        if (current->item == pho2 && current->canUse(this))
+        {
+            this->bag->get(pho2)->use(this);
+            this->bag->remove_item();
+            return;
+        }
+        if (current->item == pho3 && current->canUse(this))
+        {
+            this->bag->get(pho3)->use(this);
+            this->bag->remove_item();
+            return;
+        }
+        if (current->item == pho4 && current->canUse(this))
+        {
+            this->bag->get(pho4)->use(this);
+            this->bag->remove_item();
+            return;
+        }
+        current = current->next_item;
+    }
+    if (this->hp <= 0)
+    {
+        if (this->gil >= 100)
+        {
+            this->hp = this->maxhp / 2;
+            return;
+        }
+        else
+        {
+            this->hp=-1;
+            return;
+        }
+    }
+}
 
+bool ArmyKnights::fight(BaseOpponent *a)
+{   
+    BaseKnight *lknight=lastKnight();
+    if (lknight->knightType == PALADIN)
+    {
+        if (a->id >= 1 && a->id <= 5)
+        {
+            insert_gil(a->plus_gil);
+        }
+        if (a->id == 6)
+        {
+            if (lknight->level < a->level && lknight->bag->get(anti) == NULL)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    lknight->bag->remove_item();
+                }
+                lknight->hp -= 10;
+            }
+            if (lknight->level < a->level && lknight->bag->get(anti) != NULL)
+            {
+                lknight->bag->remove_item();
+            }
+            if (lknight->level >= a->level)
+            {
+                lknight->level = min(10, lknight->level++);
+            }
+        }
+        if (a->id == 7)
+        {
+            if (lknight->level >= a->level)
+            {
+                insert_gil(a->plus_gil);
+            }
+        }
+        if (a->id == 8)
+        {
+            if (lknight->hp < lknight->maxhp / 3)
+            {
+                lknight->hp += lknight->maxhp / 5;
+            }
+        }
+        if (a->id == 9)
+        {
+            lknight->hp = lknight->maxhp;
+        }
+        if (a->id == 10 && !meet_Omega)
+        {
+            if (lknight->level == 10 && lknight->hp == lknight->maxhp)
+            {
+                lknight->gil = 999;
+                meet_Omega = true;
+            }
+            else
+                lknight->hp = 0;
+        }
+        if (a->id == 11 && !meet_Hades)
+        {
+            if (lknight->level >= 8)
+                PaladinShield = 1;
+
+            else
+                lknight->hp = 0;
+        }
+    }
+
+    if (lknight->knightType == DRAGON)
+    {
+        if (a->id >= 1 && a->id <= 5)
+        {
+            if (lknight->level >= a->level)
+                insert_gil(a->plus_gil);
+            if (lknight->level < a->level)
+                lknight->hp -= a->DMG;
+        }
+        if (a->id == 6)
+        {
+
+            if (lknight->level >= a->level)
+            {
+                lknight->level = min(10, lknight->level++);
+            }
+        }
+        if (a->id == 7)
+        {
+            if (lknight->level >= a->level)
+            {
+                insert_gil(a->plus_gil);
+            }
+            if (lknight->level < a->level)
+                lknight->gil /= 2;
+        }
+        if (a->id == 8)
+        {
+            if (lknight->hp < lknight->maxhp / 3 && lknight->gil >= 50)
+            {
+                lknight->hp += lknight->maxhp / 5;
+                lknight->gil -= 50;
+            }
+        }
+        if (a->id == 9)
+        {
+            lknight->hp = lknight->maxhp;
+        }
+        if (a->id == 10 && !meet_Omega)
+        {
+            lknight->level = 10;
+            lknight->gil = 999;
+            meet_Omega = true;
+        }
+        if (a->id == 11 && !meet_Hades)
+        {
+            if (lknight->level == 10)
+                PaladinShield = 1;
+
+            else
+                lknight->hp = 0;
+        }
+    }
+
+    if (lknight->knightType == LANCELOT)
+    {
+        if (a->id >= 1 && a->id <= 5)
+        {
+            insert_gil(a->plus_gil);
+        }
+        if (a->id == 6)
+        {
+            if (lknight->level < a->level && lknight->bag->get(anti) == NULL)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    lknight->bag->remove_item();
+                }
+                lknight->hp -= 10;
+            }
+            if (lknight->level < a->level && lknight->bag->get(anti) != NULL)
+            {
+                lknight->bag->remove_item();
+            }
+            if (lknight->level >= a->level)
+            {
+                lknight->level = min(10, lknight->level++);
+            }
+        }
+        if (a->id == 7)
+        {
+            if (lknight->level >= a->level)
+            {
+                insert_gil(a->plus_gil);
+            }
+            if (lknight->level < a->level)
+                lknight->gil /= 2;
+        }
+        if (a->id == 8)
+        {
+            if (lknight->hp < lknight->maxhp / 3 && lknight->gil >= 50)
+            {
+                lknight->hp += lknight->maxhp / 5;
+                lknight->gil -= 50;
+            }
+        }
+        if (a->id == 9)
+        {
+            lknight->hp = lknight->maxhp;
+        }
+        if (a->id == 10 && !meet_Omega)
+        {
+            if (lknight->level == 10 && lknight->hp == lknight->maxhp)
+            {
+                lknight->gil = 999;
+                meet_Omega = true;
+            }
+            else
+                lknight->hp = 0;
+        }
+        if (a->id == 11 && !meet_Hades)
+        {
+            if (lknight->level == 10)
+                PaladinShield = 1;
+
+            else
+                lknight->hp = 0;
+        }
+    }
+
+    if (lknight->knightType == NORMAL)
+    {
+        if (a->id >= 1 && a->id <= 5)
+        {
+            insert_gil(a->plus_gil);
+        }
+        if (a->id == 6)
+        {
+            if (lknight->level < a->level && lknight->bag->get(anti) == NULL)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    lknight->bag->remove_item();
+                }
+                lknight->hp -= 10;
+            }
+            if (lknight->level < a->level && lknight->bag->get(anti) != NULL)
+            {
+                lknight->bag->remove_item();
+            }
+            if (lknight->level >= a->level)
+            {
+                lknight->level = min(10, lknight->level++);
+            }
+        }
+        if (a->id == 7)
+        {
+            if (lknight->level >= a->level)
+            {
+                insert_gil(a->plus_gil);
+            }
+            if (lknight->level < a->level)
+                lknight->gil /= 2;
+        }
+        if (a->id == 8)
+        {
+            if (lknight->hp < lknight->maxhp / 3 && lknight->gil >= 50)
+            {
+                lknight->hp += lknight->maxhp / 5;
+                lknight->gil -= 50;
+            }
+        }
+        if (a->id == 9)
+        {
+            lknight->hp = lknight->maxhp;
+        }
+        if (a->id == 10 && !meet_Omega)
+        {
+            if (lknight->level == 10 && lknight->hp == lknight->maxhp)
+            {
+                lknight->gil = 999;
+                meet_Omega = true;
+            }
+            else
+                lknight->hp = 0;
+        }
+        if (a->id == 11 && !meet_Hades)
+        {
+            if (lknight->level == 10)
+                PaladinShield = 1;
+
+            else
+                lknight->hp = 0;
+        }
+    }
+
+    lknight->after_fight();
+
+    if (lknight->hp=-1){
+        return false;
+    }
+    else return true;
+    
+}
+
+void ArmyKnights::fight_Ultimecia()
+{
+    if (hasExcaliburSword())
+    {
+        win_Ultimecia = true;
+        return;
+    }
+    if (!hasPaladinShield())
+    {
+        num = 0;
+        return;
+    };
+    if (!hasLancelotSpear())
+    {
+        num = 0;
+        return;
+    }
+    if (!hasGuinevereHair())
+    {
+        num = 0;
+        return;
+    }
+
+    BaseKnight *knight_fight = nullptr;
+    int HP_boss = 5000;
+    for (int i = num; i >= 0; --i)
+    {
+        knight_fight = knights[i];
+        if (knight_fight->knightType == LANCELOT)
+        {
+
+            int DMG = knight_fight->hp * knight_fight->level * 0.06;
+            HP_boss -= DMG;
+            if (HP_boss > 0)
+            {
+                delete knights[i];
+                num--;
+            }
+        }
+        if (knight_fight->knightType == DRAGON)
+        {
+
+            int DMG = knight_fight->hp * knight_fight->level * 0.075;
+            HP_boss -= DMG;
+            if (HP_boss > 0)
+            {
+                delete knights[i];
+                num--;
+            }
+        }
+        if (knight_fight->knightType == LANCELOT)
+        {
+
+            int DMG = knight_fight->hp * knight_fight->level * 0.05;
+            HP_boss -= DMG;
+
+            if (HP_boss > 0)
+            {
+                delete knights[i];
+                num--;
+            }
+        }
+        if (HP_boss <= 0)
+        {
+            win_Ultimecia = true;
+            return;
+        }
+    }
+
+}

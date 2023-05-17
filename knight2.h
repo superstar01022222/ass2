@@ -5,198 +5,126 @@
 
 // #define DEBUG
 
-class BaseOpponent;
-
-//opponent 
+// opponent
+class BaseKnight;
+class Events;
 class BaseOpponent
 {
-protected:
+public:
     int id;
     int level;
-    
-    virtual void win(BaseKnight *knight)=0;
-    virtual void lose(BaseKnight *knight)=0;
+    int DMG = 0;
+    int plus_gil = 0;
 };
+
 class Madbear : public BaseOpponent
 {
 public:
-    
-    Madbear()
+    Madbear(int index, int k_level)
     {
         id = 1;
-        level=(index+id)%10+1;
-    }
-    void win(BaseKnight*knight){
- 
-        knight->gil+=100; //need to make change soon
-    }
-    void lose(BaseKnight *knight){
-        knight->hp-=10*(level-knight->level);
+        level = (index + id) % 10 + 1;
+        DMG = 10 * (k_level - level);
+        plus_gil = 100;
     }
 };
 
 class Bandit : public BaseOpponent
-{   
-    public:
-    
-    Bandit()
+{
+public:
+    Bandit(int index, int k_level)
     {
         id = 2;
-        level=(index+id)%10+1;
+        level = (index + id) % 10 + 1;
+        DMG = 15 * (k_level - level);
+        plus_gil = 150;
     }
-    void win(BaseKnight*knight){
- 
-        knight->gil+=150; //need to make change soon
-    }
-    void lose(BaseKnight *knight){
-        knight->hp-=15*(level-knight->level);
-    }
-
 };
 
 class LordLupin : public BaseOpponent
 {
-    LordLupin()
+public:
+    LordLupin(int index, int k_level)
     {
         id = 3;
-        level=(index+id)%10+1;
+        level = (index + id) % 10 + 1;
+        DMG = 45 * (k_level - level);
+        plus_gil = 450;
     }
-    void win(BaseKnight*knight){
- 
-        knight->gil+=450; //need to make change soon
-    }
-    void lose(BaseKnight *knight){
-        knight->hp-=45*(level-knight->level);
-    }
-
 };
 class Elf : public BaseOpponent
 {
-    Elf()
+public:
+    Elf(int index, int k_level)
     {
         id = 4;
-        level=(index+id)%10+1;
+        level = (index + id) % 10 + 1;
+        DMG = 75 * (k_level - level);
+        plus_gil = 750;
     }
-    void win(BaseKnight*knight){
- 
-        knight->gil+=750; //need to make change soon
-    }
-    void lose(BaseKnight *knight){
-        knight->hp-=75*(level-knight->level);
-    }
-
 };
 class Troll : public BaseOpponent
 {
-    Troll()
+public:
+    Troll(int index, int k_level)
     {
         id = 5;
-     level=(index+id)%10+1;
-    }
-        void win(BaseKnight*knight){
- 
-        knight->gil+=800; //need to make change soon
-    }
-    void lose(BaseKnight *knight){
-        knight->hp-=95*(level-knight->level);
+        level = (index + id) % 10 + 1;
+        DMG = 95 * (k_level - level);
+        plus_gil = 950;
     }
 };
 class Torberry : public BaseOpponent
 {
-    Torberry()
+public:
+    Torberry(int index)
     {
         id = 6;
-         level=(index+id)%10+1;
+        level = (index + id) % 10 + 1;
     }
-    void win(BaseKnight*knight){
- 
-        knight->level=min(10,knight->level+1); //need to make change soon
-    }
-    void lose(BaseKnight *knight){
-        poison(); //need define
-    }
-
-    
-
-
 };
 class Queen : public BaseOpponent
 {
-    Queen()
+public:
+    Queen(int index, int now_gil)
     {
         id = 7;
-         level=(index+id)%10+1;
+        level = (index + id) % 10 + 1;
+        plus_gil = now_gil;
     }
-      void win(BaseKnight*knight){
- 
-        knight->gil*=2; //need to make change soon
-    }
-    void lose(BaseKnight *knight){
-        knight->gil/=2;
-    }
-
 };
 class Nina : public BaseOpponent
 {
+public:
     Nina()
     {
         id = 8;
     }
-        void win(BaseKnight*knight){
- 
-        knight->hp+=knight->maxhp/5; //need to make change soon
-    }
-    void lose(BaseKnight *knight){
-        return;
-    }
-    
-
 };
 class DurianG : public BaseOpponent
 {
+public:
     DurianG()
     {
         id = 9;
     }
-        void win(BaseKnight*knight){
- 
-        knight->hp=knight->maxhp; //need to make change soon
-    }
-    
-    
 };
 class Omega : public BaseOpponent
 {
+public:
     Omega()
     {
         id = 10;
     }
-          void win(BaseKnight*knight){
-        knight->level=10;
-        knight->gil=999; 
-
-        //never meet again
-    }
-    void lose(BaseKnight *knight){
-        knight->hp=0;
-    }
-
 };
-class Hades : public BaseOpponent{
-    Hades(){
-        id=11;
-    }
-          void win(BaseKnight*knight){
-                //khien Palafin
-       
-    }
-    void lose(BaseKnight *knight){
-       knight->hp=0;
+class Hades : public BaseOpponent
+{
+public:
+    Hades()
+    {
+        id = 11;
     }
 };
-
-
-
 
 enum ItemType
 {
@@ -274,11 +202,11 @@ public:
     virtual BaseItem *get(ItemType itemType)
     {
         BaseItem *current;
+        BaseItem *pre = nullptr;
         current = head;
         if (current->item == itemType && current == head)
         {
-            head = current->next_item;
-            c--;
+
             return current;
         }
 
@@ -287,13 +215,14 @@ public:
             if (current->item == itemType)
             {
 
-                BaseItem *temp = current;
-                current->item = head->item;
-                head->item = temp->item;
-                head = head->next_item;
-                c--;
-                return temp;
+                BaseItem *temp = current->next_item;
+                current->next_item = head->next_item;
+                pre->next_item = head;
+                head->next_item = temp;
+                head = current;
+                return head;
             }
+            pre = current;
             current = current->next_item;
         }
         return NULL;
@@ -331,6 +260,16 @@ public:
         }
         s += "]";
         return s;
+    }
+    void remove_item()
+    {
+        if (head == nullptr)
+            return;
+
+        BaseItem *remove = head;
+        head = head->next_item;
+        delete remove;
+        c--;
     }
 
     BaseItem *head;
@@ -523,23 +462,13 @@ protected:
 public:
     static BaseKnight *create(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
     string toString() const;
-
+    void after_fight();
     friend class Antidote;
     friend class PhoenixDownI;
     friend class PhoenixDownII;
     friend class PhoenixDownIII;
     friend class PhoenixDownIV;
-    friend class Madbear;
-    friend class Bandit;
-    friend class LordLupin;
-    friend class Elf;
-    friend class Troll;
-    friend class Queen;
-    friend class Nina;
-    friend class Omega;
-    friend class Hades;
-    friend class DurianG;
-    friend class Torberry;
+
     friend class ArmyKnights;
 };
 
@@ -618,15 +547,18 @@ public:
     void printInfo() const;
     void printResult(bool win) const;
 
-
     void insert_gil(int n);
     void insert_item(BaseItem *item);
 
-    int PaladinShield;
+    int PaladinShield = 0;
     int Lancelotspear;
     int GuineverHair;
     int ExcaliburSword;
-    bool meet_Omega;
+    bool meet_Omega = false;
+    bool win_Ultimecia = false;
+    bool meet_Hades = false;
+    void fight_Ultimecia();
+
 private:
     int num;
     BaseKnight **knights;
@@ -661,3 +593,4 @@ public:
 };
 
 #endif // __KNIGHT2_H__
+

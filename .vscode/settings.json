@@ -2,7 +2,15 @@
   "files.associations": {
     "xstring": "cpp",
     "iterator": "cpp",
-    "xutility": "cpp"
+    "xutility": "cpp",
+    "new": "cpp",
+    "array": "cpp",
+    "*.tcc": "cpp",
+    "memory": "cpp",
+    "istream": "cpp",
+    "functional": "cpp",
+    "tuple": "cpp",
+    "utility": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
