@@ -814,4 +814,5 @@ void ArmyKnights::fight_Ultimecia()
             return;
         }
     }
+    return;
 }
