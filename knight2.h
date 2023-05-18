@@ -81,6 +81,8 @@ public:
     {
         id = 6;
         level = (index + id) % 10 + 1;
+        plus_gil=0;
+        DMG=0;
     }
 };
 class Queen : public BaseOpponent
@@ -91,6 +93,7 @@ public:
         id = 7;
         level = (index + id) % 10 + 1;
         plus_gil = now_gil;
+        DMG=0;
     }
 };
 class Nina : public BaseOpponent
@@ -225,7 +228,7 @@ public:
             pre = current;
             current = current->next_item;
         }
-        return NULL;
+        return nullptr;
     }
     virtual string toString() const
     {

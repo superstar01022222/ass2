@@ -36,7 +36,7 @@ bool is_dragon(int n)
 /* * * BEGIN implementation of class BaseBag * * */
 bool Antidote::canUse(BaseKnight *knight)
 {
-    return true;
+    
 }
 
 void Antidote::use(BaseKnight *knight)
@@ -291,7 +291,7 @@ KnightAdventure::KnightAdventure()
 
 bool ArmyKnights::adventure(Events *events)
 {
-    for (int i = 0; i < events->count(); i++)
+    for (int i = 0; i < events->count() && num > 0; i++)
     {
         if (events->get(i) == 1)
         {
@@ -479,6 +479,7 @@ void BaseKnight::after_fight()
     }
 }
 
+
 bool ArmyKnights::fight(BaseOpponent *a)
 {
     BaseKnight *lknight = lastKnight();
@@ -490,18 +491,23 @@ bool ArmyKnights::fight(BaseOpponent *a)
         }
         if (a->id == 6)
         {
-            if (lknight->level < a->level && lknight->bag->get(anti) == NULL)
+            if (lknight->level < a->level)
             {
-                for (int i = 0; i < 3; i++)
+                lknight->bag->get(anti);
+                if (lknight->bag->head->item == anti)
                 {
                     lknight->bag->remove_item();
                 }
-                lknight->hp -= 10;
+                else
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        lknight->bag->remove_item();
+                    }
+                    lknight->hp -= 10;
+                }
             }
-            if (lknight->level < a->level && lknight->bag->get(anti) != NULL)
-            {
-                lknight->bag->remove_item();
-            }
+
             if (lknight->level >= a->level)
             {
                 lknight->level = min(10, lknight->level + 1);
