@@ -469,11 +469,12 @@ void BaseKnight::after_fight()
         if (this->gil >= 100)
         {
             this->hp = this->maxhp / 2;
+            this->gil -=100;
             return;
         }
         else
         {
-            this->hp=-1;
+            this->hp=0;
             return;
         }
     }
@@ -733,8 +734,8 @@ bool ArmyKnights::fight(BaseOpponent *a)
 
     lknight->after_fight();
 
-    if (lknight->hp=-1){
-        delete lastKnight();
+    if (lknight->hp==0){
+        delete lknight;
         num--;
         return false;
     }
