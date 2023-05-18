@@ -36,7 +36,7 @@ public:
     {
         id = 2;
         level = (index + id) % 10 + 1;
-        DMG = 15 * (k_level - level);
+        DMG = 15 * (level-k_level);
         plus_gil = 150;
     }
 };
@@ -48,7 +48,7 @@ public:
     {
         id = 3;
         level = (index + id) % 10 + 1;
-        DMG = 45 * (k_level - level);
+        DMG = 45 * (level-k_level);
         plus_gil = 450;
     }
 };
@@ -59,7 +59,7 @@ public:
     {
         id = 4;
         level = (index + id) % 10 + 1;
-        DMG = 75 * (k_level - level);
+        DMG = 75 * (level-k_level);
         plus_gil = 750;
     }
 };
@@ -70,7 +70,7 @@ public:
     {
         id = 5;
         level = (index + id) % 10 + 1;
-        DMG = 95 * (k_level - level);
+        DMG = 95 * (level-k_level);
         plus_gil = 950;
     }
 };
