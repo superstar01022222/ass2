@@ -24,7 +24,7 @@ public:
     {
         id = 1;
         level = (index + id) % 10 + 1;
-        DMG = 10 * (k_level - level);
+        DMG = 10 * ( level-k_level);
         plus_gil = 100;
     }
 };
