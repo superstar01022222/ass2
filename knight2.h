@@ -250,7 +250,9 @@ public:
             case pho3:
                 s += "PhoenixIII";
                 break;
-
+            case pho4:
+                s+="PhoenixIV";
+                break;
             default:
                 break;
             }
