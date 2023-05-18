@@ -440,25 +440,25 @@ void BaseKnight::after_fight()
         if (current->item == pho1 && current->canUse(this))
         {
             this->bag->get(pho1)->use(this);
-            this->bag->remove_item();
+
             return;
         }
         if (current->item == pho2 && current->canUse(this))
         {
             this->bag->get(pho2)->use(this);
-            this->bag->remove_item();
+
             return;
         }
         if (current->item == pho3 && current->canUse(this))
         {
             this->bag->get(pho3)->use(this);
-            this->bag->remove_item();
+
             return;
         }
         if (current->item == pho4 && current->canUse(this))
         {
             this->bag->get(pho4)->use(this);
-            this->bag->remove_item();
+
             return;
         }
         current = current->next_item;
@@ -504,7 +504,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
             }
             if (lknight->level >= a->level)
             {
-                lknight->level = min(10, lknight->level+1);
+                lknight->level = min(10, lknight->level + 1);
             }
         }
         if (a->id == 7)
@@ -559,7 +559,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
 
             if (lknight->level >= a->level)
             {
-                lknight->level = min(10, lknight->level+1);
+                lknight->level = min(10, lknight->level + 1);
             }
         }
         if (a->id == 7)
@@ -621,7 +621,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
             }
             if (lknight->level >= a->level)
             {
-                lknight->level = min(10, lknight->level+1);
+                lknight->level = min(10, lknight->level + 1);
             }
         }
         if (a->id == 7)
@@ -690,7 +690,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
             }
             if (lknight->level >= a->level)
             {
-                lknight->level = min(10, lknight->level+1);
+                lknight->level = min(10, lknight->level + 1);
             }
         }
         if (a->id == 7)
