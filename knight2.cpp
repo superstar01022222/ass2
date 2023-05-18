@@ -735,6 +735,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
 
     if (lknight->hp=-1){
         delete lastKnight();
+        num--;
         return false;
     }
     else return true;
