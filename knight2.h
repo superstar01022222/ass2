@@ -71,7 +71,7 @@ public:
         id = 5;
         level = (index + id) % 10 + 1;
         DMG = 95 * (level-k_level);
-        plus_gil = 950;
+        plus_gil = 800;
     }
 };
 class Torberry : public BaseOpponent

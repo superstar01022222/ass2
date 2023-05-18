@@ -435,7 +435,7 @@ void KnightAdventure::run()
 void BaseKnight::after_fight()
 {
     BaseItem *current = this->bag->head;
-    while (current != nullptr && current->item == anti)
+    while (current != nullptr)
     {
         if (current->item == pho1 && current->canUse(this))
         {
