@@ -123,10 +123,12 @@ string BaseKnight::toString() const
 }
 
 BaseKnight *BaseKnight::create(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
-{
+{   
+    if (antidote>=5) antidote=5;
+    if (phoenixdownI>=5) phoenixdownI=5;
     BaseKnight *knight = nullptr;
     if (is_prime(maxhp))
-    {
+    {   
         knight = new PaladinKnight(id, maxhp, level, gil, antidote, phoenixdownI);
         return knight;
     }
@@ -180,7 +182,7 @@ ArmyKnights::ArmyKnights(const string &file_armyknights) : num(0), knights(nullp
         int a, b, c, d, e;
         army_in >> a >> b >> c >> d >> e;
 
-        knights[i] = BaseKnight::create(id, a, b, d, c, e);
+        knights[i] = BaseKnight::create(id, a, b, d, e, c);
         id++;
     }
 
