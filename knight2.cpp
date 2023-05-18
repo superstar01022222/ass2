@@ -504,7 +504,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
             }
             if (lknight->level >= a->level)
             {
-                lknight->level = min(10, lknight->level++);
+                lknight->level = min(10, lknight->level+1);
             }
         }
         if (a->id == 7)
@@ -559,7 +559,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
 
             if (lknight->level >= a->level)
             {
-                lknight->level = min(10, lknight->level++);
+                lknight->level = min(10, lknight->level+1);
             }
         }
         if (a->id == 7)
@@ -621,7 +621,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
             }
             if (lknight->level >= a->level)
             {
-                lknight->level = min(10, lknight->level++);
+                lknight->level = min(10, lknight->level+1);
             }
         }
         if (a->id == 7)
@@ -690,7 +690,7 @@ bool ArmyKnights::fight(BaseOpponent *a)
             }
             if (lknight->level >= a->level)
             {
-                lknight->level = min(10, lknight->level++);
+                lknight->level = min(10, lknight->level+1);
             }
         }
         if (a->id == 7)
