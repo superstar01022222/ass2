@@ -46,7 +46,7 @@ void Antidote::use(BaseKnight *knight)
 // NixI
 bool PhoenixDownI::canUse(BaseKnight *knight)
 {
-    if ( knight->hp > 0)
+    if (knight->hp > 0)
         return false;
 
     return true;
@@ -61,7 +61,7 @@ void PhoenixDownI::use(BaseKnight *knight)
 // Nix2
 bool PhoenixDownII::canUse(BaseKnight *knight)
 {
-    if ( knight->hp >= knight->maxhp / 4)
+    if (knight->hp >= knight->maxhp / 4)
         return false;
 
     return true;
@@ -76,10 +76,10 @@ void PhoenixDownII::use(BaseKnight *knight)
 bool PhoenixDownIII::canUse(BaseKnight *knight)
 {
     if (knight->hp >= knight->maxhp / 3)
-   
+
         return false;
-    
-        return true;
+
+    return true;
 }
 
 void PhoenixDownIII::use(BaseKnight *knight)
@@ -93,11 +93,11 @@ void PhoenixDownIII::use(BaseKnight *knight)
 // NIX4
 bool PhoenixDownIV::canUse(BaseKnight *knight)
 {
-       if (knight->hp >= knight->maxhp / 2)
-   
+    if (knight->hp >= knight->maxhp / 2)
+
         return false;
-    
-        return true;
+
+    return true;
 }
 
 void PhoenixDownIV::use(BaseKnight *knight)
@@ -123,12 +123,14 @@ string BaseKnight::toString() const
 }
 
 BaseKnight *BaseKnight::create(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
-{   
-    if (antidote>=5) antidote=5;
-    if (phoenixdownI>=5) phoenixdownI=5;
+{
+    if (antidote >= 5)
+        antidote = 5;
+    if (phoenixdownI >= 5)
+        phoenixdownI = 5;
     BaseKnight *knight = nullptr;
     if (is_prime(maxhp))
-    {   
+    {
         knight = new PaladinKnight(id, maxhp, level, gil, antidote, phoenixdownI);
         return knight;
     }
@@ -220,9 +222,6 @@ BaseKnight *ArmyKnights::lastKnight() const
     else
         return knights[num - 1];
 }
-
-
-
 
 bool ArmyKnights::hasPaladinShield() const
 {
@@ -469,20 +468,20 @@ void BaseKnight::after_fight()
         if (this->gil >= 100)
         {
             this->hp = this->maxhp / 2;
-            this->gil -=100;
+            this->gil -= 100;
             return;
         }
         else
         {
-            this->hp=0;
+            this->hp = 0;
             return;
         }
     }
 }
 
 bool ArmyKnights::fight(BaseOpponent *a)
-{   
-    BaseKnight *lknight=lastKnight();
+{
+    BaseKnight *lknight = lastKnight();
     if (lknight->knightType == PALADIN)
     {
         if (a->id >= 1 && a->id <= 5)
@@ -670,7 +669,10 @@ bool ArmyKnights::fight(BaseOpponent *a)
     {
         if (a->id >= 1 && a->id <= 5)
         {
-            insert_gil(a->plus_gil);
+            if (lknight->level >= a->level)
+                insert_gil(a->plus_gil);
+            if (lknight->level < a->level)
+                lknight->hp -= a->DMG;
         }
         if (a->id == 6)
         {
@@ -734,13 +736,14 @@ bool ArmyKnights::fight(BaseOpponent *a)
 
     lknight->after_fight();
 
-    if (lknight->hp==0){
+    if (lknight->hp == 0)
+    {
         delete lknight;
         num--;
         return false;
     }
-    else return true;
-    
+    else
+        return true;
 }
 
 void ArmyKnights::fight_Ultimecia()
@@ -811,5 +814,4 @@ void ArmyKnights::fight_Ultimecia()
             return;
         }
     }
-
 }

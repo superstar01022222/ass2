@@ -242,13 +242,13 @@ public:
                 s += "Antidote";
                 break;
             case pho1:
-                s += "PHOENIXI";
+                s += "PhoenixI";
                 break;
             case pho2:
-                s += "PHOENIXII";
+                s += "PhoenixII";
                 break;
             case pho3:
-                s += "PHOENIXIII";
+                s += "PhoenixIII";
                 break;
 
             default:
