@@ -261,9 +261,9 @@ void ArmyKnights::insert_gil(int n)
 }
 void ArmyKnights::insert_item(BaseItem *item)
 {
-    int i = num - 1;
+    int index = num - 1;
 
-    while (i >= 0)
+    while (index >= 0)
     {
         if (knights[index]->bag->insertFirst(item))
         {
