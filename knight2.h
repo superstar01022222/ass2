@@ -559,7 +559,7 @@ public:
     bool meet_Omega = false;
     bool win_Ultimecia = false;
     bool meet_Hades = false;
-    void fight_Ultimecia();
+    bool fight_Ultimecia();
 
 private:
     int num;

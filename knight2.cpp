@@ -380,7 +380,7 @@ bool ArmyKnights::adventure(Events *events)
         }
         if (events->get(i) == 99)
         {
-            fight_Ultimecia(); // ultimecia
+            win_Ultimecia = fight_Ultimecia(); // ultimecia
         }
         printInfo();
     }
@@ -746,29 +746,23 @@ bool ArmyKnights::fight(BaseOpponent *a)
         return true;
 }
 
-void ArmyKnights::fight_Ultimecia()
+bool ArmyKnights::fight_Ultimecia()
 {
     if (hasExcaliburSword())
     {
-        win_Ultimecia = true;
-        return;
-    }
-    if (!hasPaladinShield())
-    {
-        num = 0;
-        return;
-    };
-    if (!hasLancelotSpear())
-    {
-        num = 0;
-        return;
-    }
-    if (!hasGuinevereHair())
-    {
-        num = 0;
-        return;
-    }
 
+        return true;
+    }
+    if (!hasPaladinShield() || !hasLancelotSpear() || !hasGuinevereHair())
+    {
+        for (int i = num; i >= num; --i)
+        {
+            delete knights[i];
+        }
+        delete[] knights;
+        num = 0;
+        return false;
+    }
     BaseKnight *knight_fight = nullptr;
     int HP_boss = 5000;
     for (int i = num; i >= 0; --i)
@@ -810,9 +804,9 @@ void ArmyKnights::fight_Ultimecia()
         }
         if (HP_boss <= 0)
         {
-            win_Ultimecia = true;
-            return;
+
+            return true;
         }
     }
-    return;
+    return false;
 }
